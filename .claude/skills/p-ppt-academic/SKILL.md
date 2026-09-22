@@ -5,8 +5,8 @@ description: "ALWAYS invoke BEFORE building any academic .pptx deck for PJ — t
 
 # P Academic PPT
 
-给 PJ 做学术汇报 deck。视觉基准 = `assets/reference-deck.pptx`（从尹道晨博士答辩 deck
-抽出的 10 页版式骨架），叙事基准 = Assertion–Evidence 的中式答辩变体。
+给 PJ 做学术汇报 deck。视觉基准 = `assets/reference-deck.pptx`（从一份浙大应用力学所的
+博士答辩 deck 抽出、已匿名化的 10 页版式骨架），叙事基准 = Assertion–Evidence 的中式答辩变体。
 
 **本 skill 只管从零做新 deck。** 审阅已有 deck 或只做美化时，用第 5 节的质检门 + 第 3 节的
 单页法则当清单，不要走克隆流程。
@@ -90,7 +90,7 @@ description: "ALWAYS invoke BEFORE building any academic .pptx deck for PJ — t
 
 ## 3. 单页法则（Assertion–Evidence 的中式答辩变体）
 
-尹 deck 与英文 A–E 的差别，是把 message title 拆成了**两层**：标题栏只做导航，断言句另立横幅。
+该样板与英文 A–E 的差别，是把 message title 拆成了**两层**：标题栏只做导航，断言句另立横幅。
 新 deck 照此办：
 
 每页必须同时具备——
