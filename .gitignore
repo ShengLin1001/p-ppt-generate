@@ -1,7 +1,6 @@
 # 本地视觉基准用的原始 deck 与他人模板，不入库；只有 skill 的样板资产例外
 *.pptx
-!.claude/skills/**/assets/*.pptx
-!.agents/skills/**/assets/*.pptx
+!assets/*.pptx
 
 # 工作产物
 *.png

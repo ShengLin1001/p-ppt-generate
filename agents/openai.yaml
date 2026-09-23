@@ -1,0 +1,8 @@
+interface:
+  display_name: "P Academic PPT"
+  short_description: "按浙大力学所答辩 deck 的视觉与 Assertion–Evidence 中式变体，为 PJ 做或改学术汇报 pptx"
+  default_prompt: "Use $p-ppt-academic to build an academic presentation deck for PJ."
+
+# 只在用户显式调用时加载。Claude Code 侧对应 settings.json 的 skillOverrides: user-invocable-only。
+policy:
+  allow_implicit_invocation: false

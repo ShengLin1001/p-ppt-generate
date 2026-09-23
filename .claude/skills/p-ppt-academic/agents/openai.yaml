@@ -1,4 +1,0 @@
-interface:
-  display_name: "P Academic PPT"
-  short_description: "按浙大力学所答辩 deck 的视觉与 Assertion–Evidence 中式变体，为 PJ 从零做学术汇报 pptx"
-  default_prompt: "Use $p-ppt-academic to build an academic presentation deck for PJ."

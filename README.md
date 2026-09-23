@@ -1,37 +1,40 @@
 # p-ppt-academic
 
-给 Claude Code / Codex 用的学术汇报 PPT skill：从零做答辩、组会、开题、项目汇报的 `.pptx`。
+给 Claude Code / Codex 用的学术汇报 PPT skill：做或改答辩、组会、开题、论坛汇报的 `.pptx`。
 
 视觉基准来自一份浙大应用力学所的博士答辩 deck，叙事基准是 Assertion–Evidence 的中式答辩变体
 ——标题栏只做导航，断言句另立横幅，证据占中部 ≥60% 版面。
 
 ## 安装
 
-仓库里已经装好两份，内容相同：
+仓库根目录就是 skill 本体。实际安装走 [codex-config](https://github.com/ShengLin1001/codex-config)：
+它以 git subtree 引入到 `skills-using/project/academic/explicit/p-ppt-academic/`，
+由 `pei_ai_univ_reinstall -global -project academic -hook` 装给 Claude Code / Codex。装完**重启会话**才会被识别。
 
-| Agent | 路径 |
-|---|---|
-| Claude Code | `.claude/skills/p-ppt-academic/` |
-| Codex | `.agents/skills/p-ppt-academic/` |
-
-装到别的仓库：把其中一份整目录复制过去即可。装完**重启会话**才会被识别。
+**只能显式调用**：开关只有一处，`agents/openai.yaml` 的 `allow_implicit_invocation: false`（Codex 用 `$p-ppt-academic`）；
+Claude Code 侧由 `pei_ai_univ_reinstall -hook` 翻译成 settings.json 的 `skillOverrides: user-invocable-only`（用 `/p-ppt-academic`）。
+不在 SKILL.md 加 `disable-model-invocation`。仅适合 Windows（质检导出依赖 PowerPoint COM），已登记在 codex-config 的 `windows-only.txt`。
 
 ## 内容
 
 ```
-p-ppt-academic/
+p-ppt-generate/                 # 仓库根 = skill 本体
 ├── SKILL.md                    # 主流程：叙事骨架 → 版式计划 → 克隆 → 填内容 → 质检门
 ├── assets/reference-deck.pptx  # 10 页版式样板，克隆源
-├── scripts/clone_pages.ps1     # PowerPoint COM 按版式计划克隆页面
 ├── scripts/export_png.ps1      # COM 导出逐页 PNG 供目检
-├── scripts/qa_check.py         # 越界 / 溢出 / 样板残留词 / 数字与语料交叉核验
+├── scripts/qa_check.py         # 越界 / 溢出 / 样板残留词 / 数字交叉核验 / 版面（重叠、填充、空白、上下标）
+├── scripts/trim_figure.py      # 插图入页前裁白边
+├── references/officecli.md     # officecli pptx 速查：只收本 skill 用到的命令（v1.0.152 实测）
 └── agents/openai.yaml          # Codex 接口声明
 ```
 
 ## 依赖
 
-- Windows + PowerPoint（COM 自动化，`New-Object -ComObject PowerPoint.Application`）
+- Windows + PowerPoint（仅质检导出 PNG 用，COM 自动化，`New-Object -ComObject PowerPoint.Application`）
 - Python + `python-pptx`
+- [officecli](https://github.com/iOfficeAI/OfficeCLI)：克隆页、填内容、修改都用它。升级后用
+  `officecli help pptx <element>` 复核 `references/officecli.md` 里的命令，并更新文件头的版本号。
+  不要把官方全量手册拉回来覆盖——它九成是 docx/xlsx 内容，还会叫 agent 加载 officecli 自带的设计 skill。
 
 ## 样板 deck 的匿名化
 
