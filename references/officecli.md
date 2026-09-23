@@ -37,6 +37,8 @@ officecli set deck.pptx '/slide[7]/shape[@id=5]' --prop align=left
 ```bash
 # 插图：只给 width 时按原图宽高比算高度；长度单位 in / cm / pt / emu
 officecli add deck.pptx '/slide[3]' --type picture --prop src=fig/a-trim.png --prop x=6.9in --prop y=2.7in --prop width=5in
+# 新建中文文本框：lang=zh-CN 才按中文避头尾断行（默认 en-US）
+officecli add deck.pptx '/slide[3]' --type textbox --prop text='图注' --prop font=微软雅黑 --prop size=14 --prop lang=zh-CN --prop x=1in --prop y=6in --prop width=4in --prop height=0.4in
 # 挪位置 / 改尺寸（面板、旗标、图片同一写法）
 officecli set deck.pptx '/slide[3]/shape[@id=8]' --prop x=0.38in --prop y=2.43in --prop width=5.2in --prop height=4.3in
 # 删形状（如版式 6 的页底 ✓ 行）

@@ -218,6 +218,9 @@ batch JSON，用 `officecli batch deck.pptx --input fill.json --json` 执行。�
 - **带 `<p:timing>` 的页不能直接用 officecli 复制或删形状**（v1.0.152 实测）：复制页会给形状
   换 id，但动画还指向旧 id；删形状会留下空的动画节点。`validate` 报错，PowerPoint 拒绝打开。
   所以 §4 第 1 步先剥动画。
+- **新建中文文本要带 `--prop lang=zh-CN`**（v1.0.152 实测）：`add --type textbox` 和带文字的 shape
+  默认写 `lang="en-US"`，PowerPoint 就不按中文避头尾断行，行首会出现「，」「）」。克隆来的样板文字
+  本身是 zh-CN，不受影响。
 - **克隆后形状 id 全部改变**，不能沿用参考 deck 里的 `@id=`，每次都先 `get` 查当前路径。
 - **`--find` 不限定页时会替换全 deck**。克隆页上的样板文字完全相同，路径要写到
   `'/slide[N]'`，不要写 `/`。
