@@ -65,9 +65,17 @@ def check_deck_exists(path_deck):
     return path_deck
 
 
+def get_shape_type(shape):
+    """python-pptx 对 officecli 生成的 OMML 公式形状（无 prstGeom 的 sp）取 shape_type 会抛异常，当作未知类型。"""
+    try:
+        return shape.shape_type
+    except NotImplementedError:
+        return None
+
+
 def get_shape_text(shape):
     """形状（含组合内嵌）的纯文本，用换行拼接。"""
-    if shape.shape_type == 6:  # msoGroup
+    if get_shape_type(shape) == 6:  # msoGroup
         return "\n".join(get_shape_text(sub) for sub in shape.shapes)
     if not shape.has_text_frame:
         return ""
@@ -130,7 +138,7 @@ def get_text_extent_in(shape):
     引文行这类不换行的长框，文字只占左边一小段，标称框宽会高估。重叠检查两头都要用估算值。
     """
     text = get_shape_text(shape).strip()
-    if not text or shape.shape_type == MSO_SHAPE_TYPE.GROUP or not shape.has_text_frame:
+    if not text or get_shape_type(shape) == MSO_SHAPE_TYPE.GROUP or not shape.has_text_frame:
         return None
     bbox = get_bbox_in(shape)
     size_in = get_first_size_pt(shape) / 72.0
@@ -224,7 +232,7 @@ def get_lpanel(lshape):
     lpanel = []
     for shape in lshape:
         bbox = get_bbox_in(shape)
-        if (shape.shape_type == MSO_SHAPE_TYPE.AUTO_SHAPE and bbox is not None
+        if (get_shape_type(shape) == MSO_SHAPE_TYPE.AUTO_SHAPE and bbox is not None
                 and not get_shape_text(shape).strip()
                 and PANEL_MIN_IN2 < get_area_in2(bbox) < SLIDE_W_IN * SLIDE_H_IN * DECOR_MIN_FRAC):
             lpanel.append(bbox)
@@ -237,7 +245,7 @@ def check_picture_fill(lshape):
     lmsg = []
     for shape in lshape:
         bbox = get_bbox_in(shape)
-        if shape.shape_type != MSO_SHAPE_TYPE.PICTURE or bbox is None:
+        if get_shape_type(shape) != MSO_SHAPE_TYPE.PICTURE or bbox is None:
             continue
         x, y = (bbox[0] + bbox[2]) / 2, (bbox[1] + bbox[3]) / 2
         lhost = [p for p in lpanel if p[0] <= x <= p[2] and p[1] <= y <= p[3]]
@@ -257,7 +265,7 @@ def check_empty_region(lshape):
     lbbox = [b for b in (get_bbox_in(s) for s in lshape) if b is not None]
     if any(get_area_in2(b) > SLIDE_W_IN * SLIDE_H_IN * DECOR_MIN_FRAC for b in lbbox):
         return []
-    if not any(s.shape_type == MSO_SHAPE_TYPE.PICTURE for s in lshape):
+    if not any(get_shape_type(s) == MSO_SHAPE_TYPE.PICTURE for s in lshape):
         return []
     n_col, n_row = 4, 2
     w = SLIDE_W_IN / n_col
