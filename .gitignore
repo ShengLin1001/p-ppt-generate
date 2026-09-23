@@ -6,3 +6,6 @@
 *.png
 qa/
 work/
+
+# 审阅/过程文档留在本地，不随 skill 分发
+ai-guide/
